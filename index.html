@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>UrbanAlert · Monitoreo de Incidencias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            background: #0b1a2b;
+        }
+
+        .main {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.2) 50%), url('1234.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            max-width: 1200px;
+            padding: 14px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: nowrap;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo i {
+            color: #ffffff;
+            font-size: 22px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 5px 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: #6fc3ff;
+        }
+
+        .login-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .login-dropdown {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 30px 28px 24px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(10, 37, 59);
+            z-index: 1000;
+            display: none;
+            animation: modalIn 0.3s ease forwards;
+        }
+
+        .login-dropdown.open {
+            display: block;
+            animation: modalIn 0.3s ease forwards;
+        }
+
+        @keyframes modalIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .login-dropdown h2 {
+            color: rgb(10, 37, 59);
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .login-dropdown .subtitle {
+            color: #0c365e;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-dropdown .input-group {
+            margin-bottom: 14px;
+        }
+
+        .login-dropdown .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a344a;
+            margin-bottom: 4px;
+        }
+
+        .login-dropdown .input-group label .required {
+            color: #e74c3c;
+        }
+
+        .login-dropdown .input-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd8e8;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .login-dropdown .input-group input:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 3px rgba(12, 54, 94, 0.12);
+        }
+
+        .login-dropdown .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0 16px;
+        }
+
+        .login-dropdown .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0c365e;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .login-dropdown .checkbox-group label {
+            font-size: 0.8rem;
+            color: #1a344a;
+            cursor: pointer;
+        }
+
+        .login-dropdown .btn-login {
+            background: #0c365e;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 4px;
+        }
+
+        .login-dropdown .btn-login:hover {
+            background: #1a4a7a;
+            transform: scale(0.98);
+        }
+
+        .login-dropdown .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 14px;
+            color: #1a4a7a;
+            font-size: 0.75rem;
+        }
+
+        .login-dropdown .divider::before,
+        .login-dropdown .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #dce6f0;
+        }
+
+        .social-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 40px;
+            border: 2px solid #dce6f0;
+            background: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1a344a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+
+        .social-login-btn:hover {
+            border-color: #0c365e;
+            background: #f0f7ff;
+        }
+
+        .social-login-btn.google-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .social-login-btn.apple-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #1a1a1a;
+        }
+
+        .login-dropdown .close-btn {
+            background: transparent;
+            border: none;
+            color: #4a6a8a;
+            font-size: 1.4rem;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            transition: 0.2s;
+        }
+
+        .login-dropdown .close-btn:hover {
+            color: #0a253b;
+            transform: rotate(90deg);
+        }
+
+        .login-dropdown .register-link {
+            text-align: center;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #1a344a;
+        }
+
+        .login-dropdown .register-link a {
+            color: #0c365e;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .login-dropdown .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.open {
+            display: block;
+        }
+
+        /* ===== MODAL PARA LOGIN SOCIAL ===== */
+        .social-login-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 30px 28px 24px;
+            width: 92%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(10, 37, 59);
+            z-index: 1100;
+            display: none;
+            animation: modalIn 0.3s ease forwards;
+        }
+
+        .social-login-modal.open {
+            display: block;
+        }
+
+        .social-login-modal .close-btn {
+            background: transparent;
+            border: none;
+            color: #4a6a8a;
+            font-size: 1.4rem;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            transition: 0.2s;
+        }
+
+        .social-login-modal .close-btn:hover {
+            color: #0a253b;
+            transform: rotate(90deg);
+        }
+
+        .social-login-modal h3 {
+            color: rgb(10, 37, 59);
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .social-login-modal h3 i {
+            margin-right: 8px;
+        }
+
+        .social-login-modal p {
+            color: #0c365e;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .social-login-modal .input-group {
+            margin-bottom: 12px;
+        }
+
+        .social-login-modal .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a344a;
+            margin-bottom: 4px;
+        }
+
+        .social-login-modal .input-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd8e8;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .social-login-modal .input-group input:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 3px rgba(12, 54, 94, 0.12);
+        }
+
+        .social-login-modal .btn-social-login {
+            background: #0c365e;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 4px;
+        }
+
+        .social-login-modal .btn-social-login:hover {
+            transform: scale(0.98);
+        }
+
+        .social-login-modal .btn-social-login.google {
+            background: #4285F4;
+        }
+
+        .social-login-modal .btn-social-login.google:hover {
+            background: #357ae8;
+        }
+
+        .social-login-modal .btn-social-login.apple {
+            background: #1a1a1a;
+        }
+
+        .social-login-modal .btn-social-login.apple:hover {
+            background: #333;
+        }
+
+        .social-login-modal .register-link-modal {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #1a344a;
+        }
+
+        .social-login-modal .register-link-modal a {
+            color: #0c365e;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .social-login-modal .register-link-modal a:hover {
+            text-decoration: underline;
+        }
+
+        .overlay-social {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1050;
+            display: none;
+        }
+
+        .overlay-social.open {
+            display: block;
+        }
+
+        .content {
+
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 30px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ===== PANELES ===== */
+        .panel {
+            display: none;
+            animation: fadeUp 0.4s ease;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .home-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .home-header h1 {
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+
+        .home-header h1 .highlight {
+            color: #ffffff;
+            display: inline-block;
+        }
+
+        .home-header .sub {
+            color: #ffffff;
+            font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+            margin-top: 6px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-header .sub i {
+            color: #30b04a;
+            font-size: 0.5rem;
+            margin-right: 6px;
+        }
+
+        /* ===== TARJETAS DE ESTADÍSTICAS - COLOR #0c365e ===== */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px 30px;
+            margin: 10px 0 25px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 18px 32px;
+            min-width: 130px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+            font-weight: 700;
+            color: #0c365e;
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            font-size: clamp(0.65rem, 0.85vw, 0.85rem);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #0c365e;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .notification-bar {
+            background: #fff;
+            border-radius: 16px;
+            padding: 12px 20px;
+            margin: 10px 0 16px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-bar .notif-text {
+            color: #0c365e;
+            font-size: clamp(0.8rem, 0.9vw, 0.95rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-bar .notif-text i {
+            color: #0c365e;
+            font-size: 1.1rem;
+        }
+
+        .notification-bar .notif-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .notification-bar .notif-actions button {
+            background: rgba(255, 255, 255, 0.12);
+            color: #0c365e;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .notification-bar .notif-actions button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .notification-bar .notif-actions button i {
+            margin-right: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: clamp(0.6rem, 0.7vw, 0.75rem);
+            color: rgba(255, 255, 255, 0.4);
+            padding: 10px 0 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 16px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+ 
+        .report-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: clamp(18px, 2.5vw, 30px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+            font-weight: 700;
+            color: #0a253b;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title i {
+            color: #0c365e;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1a344a;
+            font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+            margin-bottom: 4px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #0c365e;
+            width: 20px;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 16px;
+            border: 2px solid #cbd8e8;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: #f9fcff;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 4px rgba(12, 54, 94, 0.12);
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .file-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            background: #f2f7ff;
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 2px dashed #8eb3d1;
+            transition: all 0.3s ease;
+        }
+
+        .file-wrap:hover {
+            border-color: #0c365e;
+            background: #e8f0fa;
+        }
+
+        .file-wrap .fake-btn {
+            background: #0c365e;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-wrap .fake-btn:hover {
+            background: #1a4a7a;
+            transform: scale(1.02);
+        }
+
+        .file-wrap .file-name {
+            color: #305d7e;
+            font-size: 0.85rem;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .file-wrap input[type="file"] {
+            display: none;
+        }
+
+        .btn-submit {
+            background: #0c365e;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: #1a4a7a;
+            transform: scale(0.98);
+            box-shadow: 0 6px 20px rgba(12, 54, 94, 0.3);
+        }
+
+        /* ===== IA CLASSIFICATION ===== */
+        .ia-box {
+            background: #e3edf9;
+            margin: 16px 0 4px;
+            padding: 16px 20px;
+            border-radius: 20px;
+            border-left: 5px solid #0c365e;
+        }
+
+        .ia-title {
+            font-weight: 700;
+            color: #083453;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .ia-title i {
+            color: #0c365e;
+            font-size: 1.2rem;
+        }
+
+        .ia-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 14px;
+            font-size: 0.9rem;
+            padding: 4px 0;
+            border-bottom: 1px solid #b3cce5;
+        }
+
+        .ia-row:last-child {
+            border-bottom: none;
+        }
+
+        .ia-row strong {
+            min-width: 65px;
+            color: #0b2b4a;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #0c365e;
+            color: white;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
+        }
+
+        .badge.pendiente {
+            background: #a0842b;
+        }
+        .badge.media {
+            background: #b17d2b;
+        }
+        .badge.alta {
+            background: #aa3a3a;
+        }
+        .badge.baja {
+            background: #3b7846;
+        }
+
+        .ia-hint {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #1b4b6e;
+            background: #d1e1f2;
+            padding: 5px 14px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .panel-title {
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 14px;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .panel-title i {
+            color: #ffffff;
+        }
+
+        .report-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .report-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border-radius: 18px;
+            padding: 14px 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #0c365e;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .report-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1;
+        }
+
+        .report-item .info strong {
+            color: #0a253b;
+            font-size: 0.95rem;
+        }
+
+        .report-item .info span {
+            font-size: 0.85rem;
+            color: #2a5277;
+        }
+
+        .report-item .info span i {
+            margin-right: 4px;
+            color: #0c365e;
+            width: 16px;
+        }
+
+        .report-item .status {
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 3px 12px;
+            border-radius: 40px;
+            background: #e8f0fa;
+            color: #0b2b4a;
+            white-space: nowrap;
+        }
+
+        .empty-reports {
+            text-align: center;
+            padding: 35px 10px;
+            color: #4a6a8a;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .empty-reports i {
+            font-size: 2.8rem;
+            color: #b0c8de;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .empty-reports p {
+            font-size: 0.95rem;
+        }
+
+        .map-container {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            height: clamp(280px, 50vh, 500px);
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .map-credit {
+            text-align: right;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 5px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0 0 24px 24px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .map-credit a {
+            color: #0c365e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .map-credit a:hover {
+            text-decoration: underline;
+        }
+
+        .channels-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: clamp(20px, 2.5vw, 30px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .channels-panel h2 {
+            color: #0a253b;
+            font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .channels-panel h2 i {
+            color: #0c365e;
+        }
+
+        .channels-panel .sub-text {
+            color: #0c365e;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .channel-item {
+            background: #0c365e;
+            border-radius: 16px;
+            padding: 16px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .channel-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(12, 54, 94, 0.3);
+        }
+
+        .channel-item .ch-type {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .channel-item .ch-type i {
+            margin-right: 8px;
+        }
+
+        .channel-item .ch-contact {
+            color: #fff;
+            font-size: 0.85rem;
+            display: block;
+            line-height: 1.8;
+        }
+
+        .channel-item .ch-contact i {
+            margin-right: 8px;
+            color: #6fc3ff;
+            width: 18px;
+        }
+
+        .channel-item .ch-institution {
+            color: #a8c8e8;
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .channel-item .ch-institution i {
+            margin-right: 6px;
+            color: #6fc3ff;
+        }
+
+        .help-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: clamp(16px, 2vw, 24px);
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .help-container h2 {
+            color: #0c365e;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            justify-content: center;
+        }
+
+        .help-container h2 i {
+            color: #0c365e;
+        }
+
+        .help-container>p {
+            color: #0c365e;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e4ecf5;
+            padding: 10px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            font-weight: 700;
+            color: #0b2b4a;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .faq-q:hover {
+            color: #0c365e;
+        }
+
+        .faq-q i {
+            transition: transform 0.3s ease;
+            color: #0c365e;
+        }
+
+        .faq-q.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            padding-top: 6px;
+            color: #2a5277;
+            font-size: 0.85rem;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .faq-a.open {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .help-chat {
+            margin-top: 16px;
+            background: #e8f0fa;
+            border-radius: 18px;
+            padding: 14px 16px;
+        }
+
+        .help-chat p {
+            color: #0b2b4a;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .help-chat p i {
+            color: #0c365e;
+            margin-right: 6px;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chat-input-group input {
+            flex: 1;
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 2px solid #cbd8e8;
+            outline: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            font-family: inherit;
+        }
+
+        .chat-input-group input:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 3px rgba(12, 54, 94, 0.12);
+        }
+
+        .chat-input-group button {
+            background: #0c365e;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .chat-input-group button:hover {
+            background: #1a4a7a;
+            transform: scale(1.02);
+        }
+
+        #helpResponse {
+            margin-top: 10px;
+            color: #1a4a6e;
+            font-size: 0.85rem;
+            background: white;
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: none;
+            border-left: 4px solid #0c365e;
+            animation: fadeUp 0.3s ease;
+        }
+
+        /* Email input en notificaciones */
+        .email-input-container {
+            display: none;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .email-input-container.show {
+            display: block;
+        }
+
+        .email-input-container input {
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 2px solid #cbd8e8;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .email-input-container input:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 3px rgba(12, 54, 94, 0.12);
+        }
+
+        .email-input-container .btn-confirm-email {
+            margin-top: 6px;
+            background: #0c365e;
+            color: white;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+
+        .email-input-container .btn-confirm-email:hover {
+            background: #1a4a7a;
+        }
+
+        /* WhatsApp input */
+        .whatsapp-input-container {
+            display: none;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .whatsapp-input-container.show {
+            display: block;
+        }
+
+        .whatsapp-input-container input {
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 2px solid #cbd8e8;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .whatsapp-input-container input:focus {
+            border-color: #0c365e;
+            box-shadow: 0 0 0 3px rgba(12, 54, 94, 0.12);
+        }
+
+        .whatsapp-input-container .btn-confirm-whatsapp {
+            margin-top: 6px;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+
+        .whatsapp-input-container .btn-confirm-whatsapp:hover {
+            background: #1da851;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 16px;
+                gap: 6px 12px;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+            }
+
+            .logo {
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .logo i {
+                font-size: 16px;
+            }
+
+            .nav-links {
+                gap: 12px 16px;
+                flex-shrink: 0;
+            }
+
+            .nav-links li a {
+                font-size: 14px;
+                padding: 4px 3px;
+            }
+
+            .login-btn {
+                padding: 5px 14px;
+                font-size: 14px;
+                flex-shrink: 0;
+                margin-left: 4px;
+            }
+
+            .content {
+                padding: 14px 12px 20px;
+            }
+
+            .home-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .stats-grid {
+                gap: 10px 16px;
+            }
+
+            .stat-card {
+                padding: 12px 16px;
+                min-width: 80px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .channels-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+
+            .report-section {
+                padding: 14px;
+                border-radius: 18px;
+            }
+
+            .channels-panel {
+                padding: 14px;
+                border-radius: 18px;
+            }
+
+            .report-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                padding: 10px 14px;
+            }
+
+            .map-container {
+                height: 200px;
+            }
+
+            .help-container {
+                padding: 12px;
+            }
+
+            .chat-input-group {
+                flex-direction: column;
+            }
+
+            .chat-input-group input {
+                width: 100%;
+            }
+
+            .chat-input-group button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .notification-bar {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px 14px;
+            }
+
+            .notification-bar .notif-actions {
+                justify-content: center;
+            }
+
+            .login-dropdown {
+                width: 95%;
+                padding: 22px 18px 18px;
+            }
+
+            .social-login-modal {
+                width: 95%;
+                padding: 22px 18px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 6px 8px;
+                gap: 4px 8px;
+                overflow-x: auto;
+            }
+
+            .logo {
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .logo i {
+                font-size: 13px;
+            }
+
+            .nav-links {
+                gap: 6px 10px;
+                flex-shrink: 0;
+            }
+
+            .nav-links li a {
+                font-size: 12px;
+                padding: 3px 2px;
+            }
+
+            .login-btn {
+                padding: 4px 10px;
+                font-size: 12px;
+                flex-shrink: 0;
+                margin-left: 2px;
+            }
+
+            .home-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .stat-card {
+                padding: 8px 10px;
+                min-width: 60px;
+                border-radius: 14px;
+            }
+
+            .stat-number {
+                font-size: 1.4rem;
+            }
+
+            .stat-label {
+                font-size: 0.5rem;
+            }
+
+            .channels-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .channel-item {
+                padding: 10px 12px;
+            }
+
+            .channel-item .ch-type {
+                font-size: 0.75rem;
+            }
+
+            .channel-item .ch-contact {
+                font-size: 0.75rem;
+            }
+
+            .channel-item .ch-institution {
+                font-size: 0.65rem;
+            }
+
+            .report-section {
+                padding: 10px;
+                border-radius: 14px;
+            }
+
+            .channels-panel {
+                padding: 10px;
+                border-radius: 14px;
+            }
+
+            .form-title {
+                font-size: 1rem;
+            }
+
+            .btn-submit {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .map-container {
+                height: 160px;
+            }
+
+            .social-login-modal {
+                width: 95%;
+                padding: 18px 14px 14px;
+            }
+        }
+
+        /* ===== UTILIDADES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .mt-1 {
+            margin-top: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== SCROLLBAR PERSONALIZADA ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0c365e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1a4a7a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay para el modal de login social -->
+    <div class="overlay-social" id="overlaySocial"></div>
+
+    <!-- Modal para login con Google -->
+    <div class="social-login-modal" id="googleModal">
+        <button class="close-btn" id="closeGoogleModal">&times;</button>
+        <h3><i class="fab fa-google" style="color:#4285F4;"></i> Iniciar con Google</h3>
+        <p>Ingresa tu cuenta de Google</p>
+        <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="googleEmailInput" placeholder="tucorreo@gmail.com" />
+        </div>
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" id="googlePasswordInput" placeholder="**********" />
+        </div>
+        <button class="btn-social-login google" id="googleSubmitBtn"><i class="fab fa-google"></i> Iniciar con Google</button>
+        <div class="register-link-modal">
+            ¿No tienes cuenta? <a onclick="alert('Redirigiendo al registro...')">Regístrate</a>
+        </div>
+    </div>
+
+    <!-- Modal para login con Apple -->
+    <div class="social-login-modal" id="appleModal">
+        <button class="close-btn" id="closeAppleModal">&times;</button>
+        <h3><i class="fab fa-apple"></i> Iniciar con Apple</h3>
+        <p>Ingresa tu cuenta de Apple</p>
+        <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="appleEmailInput" placeholder="tucorreo@icloud.com" />
+        </div>
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" id="applePasswordInput" placeholder="**********" />
+        </div>
+        <button class="btn-social-login apple" id="appleSubmitBtn"><i class="fab fa-apple"></i> Iniciar con Apple</button>
+        <div class="register-link-modal">
+            ¿No tienes cuenta? <a onclick="alert('Redirigiendo al registro...')">Regístrate</a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ===== MODAL DE LOGIN/REGISTRO ===== -->
+    <div class="login-dropdown" id="loginDropdown">
+        <button class="close-btn" id="closeLogin">&times;</button>
+        <h2>Iniciar Sesión</h2>
+        <p class="subtitle">
+Ingresa con tu correo y contraseña.
+</p>
+
+        <!-- Correo -->
+        <div class="input-group">
+            <label>Correo electrónico <span class="required">*</span></label>
+            <input type="email" id="emailInput" placeholder="tucorreo@ejemplo.com" />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="input-group">
+            <label>Contraseña <span class="required">*</span></label>
+            <input type="password" id="passwordInput" placeholder="**********" />
+        </div>
+
+        <!-- Checkbox marketing -->
+        <div class="checkbox-group">
+            <input type="checkbox" id="marketingCheckbox" />
+            <label for="marketingCheckbox">No quiero recibir correos electrónicos de marketing</label>
+        </div>
+
+        <button class="btn-login" id="loginSubmitBtn">
+
+Iniciar Sesión
+
+</button>
+
+<div class="register-link">
+    ¿No tienes una cuenta?
+    <a href="#" id="openRegister">
+        Regístrate aquí
+    </a>
+</div>
+
+        <!-- Divisor -->
+        <div class="divider">o continuar con</div>
+
+        <!-- Google -->
+        <button class="social-login-btn google-btn" id="googleLoginBtn">
+            <svg viewBox="0 0 48 48" width="20" height="20">
+                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+            </svg>
+            Google
+        </button>
+
+        <!-- Apple -->
+        <button class="social-login-btn apple-btn" id="appleLoginBtn">
+            <svg viewBox="0 0 384 512" width="20" height="20">
+                <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+            </svg>
+            Apple
+        </button>
+
+        <div class="register-link">
+            ¿Ya tienes cuenta? <a onclick="alert('Redirigiendo a inicio de sesión...')">Inicia sesión</a>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i> UrbanAlert
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-panel="home">Inicio</a></li>
+                <li><a href="#" data-panel="report">Reporte</a></li>
+                <li><a href="#" data-panel="myreports">Mis Reportes</a></li>
+                <li><a href="#" data-panel="map">Mapa</a></li>
+                <li><a href="#" data-panel="channels">Canales</a></li>
+                <li><a href="#" data-panel="help">Ayuda</a></li>
+            </ul>
+
+            <button class="login-btn" id="loginBtn">
+                <i class="fas fa-user-circle"></i> Iniciar Sesión
+            </button>
+        </nav>
+
+        <div class="content">
+
+            <div id="panel-home" class="panel active">
+                <div class="home-header">
+                    <h1>
+                        <span>Monitoreo</span><br />
+                        <span class="highlight">Inteligente</span>
+                        <span>de Incidencias</span>
+                    </h1>
+                    <div class="sub">
+                        <i class="fas fa-circle"></i>
+                        Reporta problemas en tiempo real con clasificación automática y seguimiento en línea.
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalReportes">0</div>
+                        <div class="stat-label">REPORTES ENVIADOS</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="enProceso">0</div>
+                        <div class="stat-label">EN PROCESO</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="resueltos">0</div>
+                        <div class="stat-label">RESUELTOS</div>
+                    </div>
+                </div>
+
+                <div class="notification-bar" id="notificationBar">
+                    <div class="notif-text">
+                        <i class="fas fa-bell"></i>
+                        <span id="notifMessage">  Activa las notificaciones para recibir actualizaciones de tus reportes.</span>
+                    </div>
+                    <div class="notif-actions">
+                        <button onclick="showEmailInput()"><i class="fas fa-envelope"></i> Correo</button>
+                        <button onclick="showWhatsAppInput()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                        <button onclick="setNotificacion('plataforma')"><i class="fas fa-bell"></i> Plataforma</button>
+                    </div>
+                    <div class="email-input-container" id="emailInputContainer">
+                        <input type="email" id="emailNotifInput" placeholder="tucorreo@gmail.com o tucorreo@icloud.com" />
+                        <button class="btn-confirm-email" onclick="confirmarEmail()"><i class="fas fa-check"></i> Confirmar</button>
+                    </div>
+                    <div class="whatsapp-input-container" id="whatsappInputContainer">
+                        <input type="tel" id="whatsappNotifInput" placeholder="+51 987 654 321" />
+                        <button class="btn-confirm-whatsapp" onclick="confirmarWhatsApp()"><i class="fab fa-whatsapp"></i> Confirmar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="panel-report" class="panel">
+                <div class="report-section">
+                    <div class="form-title"><i class="fas fa-edit"></i> Reportar Nueva Incidencia</div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-tag"></i> Tipo de incidencia</label>
+                        <select id="tipoIncidencia">
+                            <option value="">Selecciona una opción</option>
+                            <option value="Inseguridad o acto delictivo">Inseguridad o acto delictivo</option>
+                            <option value="Incendio o amago de incendio">Incendio o amago de incendio</option>
+                            <option value="Cableado eléctrico caído o peligroso">Cableado eléctrico caído o peligroso</option>
+                            <option value="Buzón sin tapa">Buzón sin tapa</option>
+                            <option value="Acumulación de basura o desechos">Acumulación de basura o desechos</option>
+                            <option value="Calles o pistas en mal estado">Calles o pistas en mal estado</option>
+                            <option value="Falta de servicios básicos (Agua o Luz)">Falta de servicios básicos (Agua o Luz)</option>
+                            <option value="Falta de alumbrado público">Falta de alumbrado público</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-map-pin"></i> Ubicación (Piura, Perú)</label>
+                        <input type="text" id="ubicacion" placeholder="Ej. Av. Grau 123, Piura" value="Piura, Perú" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-camera"></i> Subir evidencia (foto o video)</label>
+                        <div class="file-wrap">
+                            <span class="fake-btn" id="fileBtn"><i class="fas fa-upload"></i> Seleccionar archivo</span>
+                            <span class="file-name" id="fileDisplay">Ningún archivo seleccionado</span>
+                            <input type="file" id="fileInput" accept="image/*,video/*" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Descripción</label>
+                        <textarea id="descripcion" placeholder="Describe el problema... (ej. bache en la pista, 28/06/2026)"></textarea>
+                    </div>
+
+                    <button class="btn-submit" id="enviarReporteBtn"><i class="fas fa-paper-plane"></i> Enviar Reporte</button>
+
+                    <div class="ia-box" id="iaPanel">
+                        <div class="ia-title"><i class="fas fa-brain"></i> IA de Clasificación</div>
+                        <div class="ia-row"><strong>Prioridad:</strong> <span id="prioridadVal" class="badge pendiente">Pendiente</span></div>
+                        <div class="ia-row"><strong>Entidad:</strong> <span id="entidadVal">Pendiente</span></div>
+                        <div class="ia-row"><strong>Estado:</strong> <span id="estadoVal">Esperando reporte</span></div>
+                        <div class="ia-hint" id="iaHint"><i class="fas fa-info-circle"></i> La IA asignará prioridad y entidad según el tipo de incidencia.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="panel-myreports" class="panel">
+                <h2 class="panel-title"><i class="fas fa-file-alt"></i> Mis Reportes</h2>
+                <div class="report-list" id="reportList">
+                    <div class="empty-reports">
+                        <i class="fas fa-inbox"></i>
+                        <p>No has enviado reportes aún.</p>
+                        <button class="btn-submit" style="width:auto; padding:8px 24px; margin-top:12px; display:inline-flex; background:#0c365e;" onclick="switchPanel('report')"><i class="fas fa-plus"></i> Crear reporte</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="panel-map" class="panel">
+                <h2 class="panel-title"><i class="fas fa-map"></i> Mapa de Incidencias</h2>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126916.74168262124!2d-80.6967239!3d-5.1944939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904a1a3f8b6d3f5f%3A0x4f1c8e5f7b9a3e2d!2sPiura%2C%20Per%C3%BA!5e0!3m2!1ses!2spe!4v1719600000000!5m2!1ses!2spe" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="map-credit">Piura, Perú · <a href="https://maps.app.goo.gl/g7eJynozF9LM4Hxk9?g_st=aw" target="_blank">Ver en Google Maps</a></div>
+            </div>
+
+            <!-- ===== CANALES ACTUALIZADOS ===== -->
+            <div id="panel-channels" class="panel">
+                <div class="channels-panel">
+                    <h2><i class="fas fa-paper-plane"></i> Canales de envío</h2>
+                    <p class="sub-text">Tu reporte será enviado a las autoridades correspondientes según el tipo de incidencia.</p>
+                    <div class="channels-grid">
+                        <!-- Inseguridad -->
+                        <div class="channel-item">
+                            <span class="ch-type"><i class="fas fa-shield-alt"></i> Inseguridad</span>
+                            <span class="ch-contact">
+                                <i class="fas fa-phone"></i> 105<br/>
+                                <i class="fas fa-phone"></i> 073-306272
+                            </span>
+                            <span class="ch-institution">
+                                <i class="fas fa-building"></i> Región Policial Piura / Serenazgo
+                            </span>
+                        </div>
+
+                        <!-- Incendio -->
+                        <div class="channel-item">
+                            <span class="ch-type"><i class="fas fa-fire"></i> Incendio</span>
+                            <span class="ch-contact">
+                                <i class="fas fa-phone"></i> 116<br/>
+                                <i class="fas fa-phone"></i> 073-324444
+                            </span>
+                            <span class="ch-institution">
+                                <i class="fas fa-building"></i> Bomberos Voluntarios Piura N° 25
+                            </span>
+                        </div>
+
+                        <!-- Cableado -->
+                        <div class="channel-item">
+                            <span class="ch-type"><i class="fas fa-bolt"></i> Cableado</span>
+                            <span class="ch-contact">
+                                <i class="fas fa-phone"></i> 073-284050<br/>
+                                <i class="fab fa-whatsapp"></i> 991 334 000
+                            </span>
+                            <span class="ch-institution">
+                                <i class="fas fa-building"></i> ENOSA (Electronoroeste S.A.)
+                            </span>
+                        </div>
+
+                        <!-- Agua/Desagüe -->
+                        <div class="channel-item">
+                            <span class="ch-type"><i class="fas fa-tint"></i> Agua/Desagüe</span>
+                            <span class="ch-contact">
+                                <i class="fas fa-phone"></i> 073-343213<br/>
+                                <i class="fas fa-phone"></i> 0800-11321
+                            </span>
+                            <span class="ch-institution">
+                                <i class="fas fa-building"></i> EPS Grau S.A.
+                            </span>
+                        </div>
+
+                        <!-- Basura / Pistas -->
+                        <div class="channel-item">
+                            <span class="ch-type"><i class="fas fa-trash"></i> Basura / Pistas</span>
+                            <span class="ch-contact">
+                                <i class="fas fa-phone"></i> 073-214480<br/>
+                                <i class="fab fa-whatsapp"></i> 913 021 445
+                            </span>
+                            <span class="ch-institution">
+                                <i class="fas fa-building"></i> Municipalidad Provincial de Piura
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="panel-help" class="panel">
+                <div class="help-container">
+                    <h2><i class="fas fa-question-circle"></i> Centro de Ayuda</h2>
+                    <p>Preguntas frecuentes y respuestas de la IA.</p>
+
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo funciona la clasificación de incidencias? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-a">La IA analiza el tipo de incidencia seleccionado y asigna una prioridad (Alta, Media, Baja) y la entidad responsable (Policía, Municipalidad, Enel, etc.) para una atención más rápida.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo puedo subir un archivo correctamente? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-a">Haz clic en "Seleccionar archivo", elige una foto o video de tu dispositivo y el nombre aparecerá. Asegúrate de que el archivo no supere los 10 MB.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">¿Dónde veo el estado de mi reporte? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-a">En la sección "Mis Reportes" puedes ver todos tus envíos con su estado actual: Esperando, En proceso o Resuelto.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo restablezco mi contraseña? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-a">En la pantalla de inicio de sesión, haz clic en "¿Olvidaste tu contraseña?" y sigue las instrucciones para recibir un correo de restablecimiento.</div>
+                    </div>
+
+                    <div class="help-chat">
+                        <p><i class="fas fa-robot"></i> ¿Tienes otra pregunta? Escribe aquí.</p>
+                        <div class="chat-input-group">
+                            <input type="text" id="helpInput" placeholder="Escribe tu pregunta..." />
+                            <button onclick="responderAyuda()">Preguntar</button>
+                        </div>
+                        <div id="helpResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-links li a');
+        const panels = {
+            home: document.getElementById('panel-home'),
+            report: document.getElementById('panel-report'),
+            myreports: document.getElementById('panel-myreports'),
+            map: document.getElementById('panel-map'),
+            channels: document.getElementById('panel-channels'),
+            help: document.getElementById('panel-help')
+        };
+
+        function switchPanel(id) {
+            Object.values(panels).forEach(p => p.classList.remove('active'));
+            if (panels[id]) panels[id].classList.add('active');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.panel === id) link.classList.add('active');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const panelId = link.dataset.panel;
+                if (panelId) switchPanel(panelId);
+            });
+        });
+
+        // ===== LOGIN DROPDOWN =====
+        const loginBtn = document.getElementById('loginBtn');
+        const loginDropdown = document.getElementById('loginDropdown');
+        const overlay = document.getElementById('overlay');
+        const closeLogin = document.getElementById('closeLogin');
+
+        function openLogin() {
+            loginDropdown.classList.add('open');
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginFn() {
+            loginDropdown.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        loginBtn.addEventListener('click', openLogin);
+        closeLogin.addEventListener('click', closeLoginFn);
+        overlay.addEventListener('click', closeLoginFn);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLoginFn();
+        });
+
+        // ===== LOGIN/REGISTRO =====
+        document.getElementById('loginSubmitBtn').addEventListener('click', function() {
+            const email = document.getElementById('emailInput').value;
+            const pass = document.getElementById('passwordInput').value;
+            
+            if (!email || !pass) {
+                alert('⚠️ Por favor, completa todos los campos obligatorios (*).');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('⚠️ Por favor, ingresa un correo electrónico válido.');
+                return;
+            }
+            
+            alert('✅ Registro/Inicio de sesión exitoso\n\nNombre: ' + name + '\nCorreo: ' + email);
+            closeLoginFn();
+            document.getElementById('loginBtn').innerHTML = '<i class="fas fa-user-circle"></i> Mi Cuenta';
+            document.getElementById('loginBtn').style.background = 'rgba(111, 195, 255, 0.2)';
+        });
+
+        // ===== LOGIN SOCIAL - MODALES =====
+        const overlaySocial = document.getElementById('overlaySocial');
+        const googleModal = document.getElementById('googleModal');
+        const appleModal = document.getElementById('appleModal');
+
+        function openGoogleModal() {
+            closeLoginFn();
+            googleModal.classList.add('open');
+            overlaySocial.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openAppleModal() {
+            closeLoginFn();
+            appleModal.classList.add('open');
+            overlaySocial.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSocialModals() {
+            googleModal.classList.remove('open');
+            appleModal.classList.remove('open');
+            overlaySocial.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('googleLoginBtn').addEventListener('click', openGoogleModal);
+        document.getElementById('appleLoginBtn').addEventListener('click', openAppleModal);
+        document.getElementById('closeGoogleModal').addEventListener('click', closeSocialModals);
+        document.getElementById('closeAppleModal').addEventListener('click', closeSocialModals);
+        overlaySocial.addEventListener('click', closeSocialModals);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSocialModals();
+        });
+
+        // Submit Google
+        document.getElementById('googleSubmitBtn').addEventListener('click', function() {
+            const email = document.getElementById('googleEmailInput').value.trim();
+            const pass = document.getElementById('googlePasswordInput').value.trim();
+            if (!email || !pass) {
+                alert('⚠️ Por favor, ingresa tu correo y contraseña de Google.');
+                return;
+            }
+            if (!email.includes('@')) {
+                alert('⚠️ Por favor, ingresa un correo electrónico válido.');
+                return;
+            }
+            alert('🔐 Iniciando sesión con Google\n\nCorreo: ' + email + '\n\n✅ Has iniciado sesión correctamente.');
+            closeSocialModals();
+            document.getElementById('loginBtn').innerHTML = '<i class="fas fa-user-circle"></i> Mi Cuenta';
+            document.getElementById('loginBtn').style.background = 'rgba(111, 195, 255, 0.2)';
+            document.getElementById('googleEmailInput').value = '';
+            document.getElementById('googlePasswordInput').value = '';
+        });
+
+        // Submit Apple
+        document.getElementById('appleSubmitBtn').addEventListener('click', function() {
+            const email = document.getElementById('appleEmailInput').value.trim();
+            const pass = document.getElementById('applePasswordInput').value.trim();
+            if (!email || !pass) {
+                alert('⚠️ Por favor, ingresa tu correo y contraseña de Apple.');
+                return;
+            }
+            if (!email.includes('@')) {
+                alert('⚠️ Por favor, ingresa un correo electrónico válido.');
+                return;
+            }
+            alert('🍎 Iniciando sesión con Apple\n\nCorreo: ' + email + '\n\n✅ Has iniciado sesión correctamente.');
+            closeSocialModals();
+            document.getElementById('loginBtn').innerHTML = '<i class="fas fa-user-circle"></i> Mi Cuenta';
+            document.getElementById('loginBtn').style.background = 'rgba(111, 195, 255, 0.2)';
+            document.getElementById('appleEmailInput').value = '';
+            document.getElementById('applePasswordInput').value = '';
+        });
+
+        // Enter key para modales sociales
+        document.getElementById('googlePasswordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('googleSubmitBtn').click();
+        });
+        document.getElementById('applePasswordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('appleSubmitBtn').click();
+        });
+
+        // Enter key para login principal
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click()
+            });
+
+        // ===== NOTIFICACIONES =====
+        let notifActiva = 'plataforma';
+        let emailNotif = '';
+        let whatsappNotif = '';
+
+        function setNotificacion(tipo) {
+            notifActiva = tipo;
+            const msg = document.getElementById('notifMessage');
+            const nombres = {
+                email: '📧 Notificaciones por Correo activadas',
+                whatsapp: '📱 Notificaciones por WhatsApp activadas',
+                plataforma: '🔔 Notificaciones en Plataforma activadas'
+            };
+            msg.textContent = nombres[tipo] || 'Notificaciones activadas';
+            const toast = document.createElement('div');
+            toast.style.cssText =
+                'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0c365e;color:white;padding:12px 24px;border-radius:40px;font-weight:600;z-index:2000;box-shadow:0 8px 30px rgba(0,0,0,0.3);animation:fadeUp 0.3s ease;';
+            toast.textContent = '✅ ' + nombres[tipo];
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        function showEmailInput() {
+            const container = document.getElementById('emailInputContainer');
+            container.classList.toggle('show');
+            if (container.classList.contains('show')) {
+                document.getElementById('whatsappInputContainer').classList.remove('show');
+                document.getElementById('emailNotifInput').focus();
+            }
+        }
+
+        function showWhatsAppInput() {
+            const container = document.getElementById('whatsappInputContainer');
+            container.classList.toggle('show');
+            if (container.classList.contains('show')) {
+                document.getElementById('emailInputContainer').classList.remove('show');
+                document.getElementById('whatsappNotifInput').focus();
+            }
+        }
+
+        function confirmarEmail() {
+            const input = document.getElementById('emailNotifInput');
+            const email = input.value.trim();
+            if (!email || !email.includes('@')) {
+                alert('⚠️ Por favor, ingresa un correo electrónico válido (ej. usuario@gmail.com o usuario@icloud.com)');
+                return;
+            }
+            const esGmail = email.toLowerCase().includes('@gmail.com');
+            const esApple = email.toLowerCase().includes('@icloud.com') || email.toLowerCase().includes('@me.com') || email.toLowerCase().includes('@mac.com');
+            
+            if (!esGmail && !esApple) {
+                alert('⚠️ Por favor, ingresa un correo de Gmail (@gmail.com) o Apple (@icloud.com, @me.com, @mac.com)');
+                return;
+            }
+            
+            emailNotif = email;
+            setNotificacion('email');
+            const msg = document.getElementById('notifMessage');
+            const tipoCorreo = esGmail ? 'Gmail' : 'Apple';
+            msg.textContent = `📧 Notificaciones activadas para ${tipoCorreo}: ${email}`;
+            document.getElementById('emailInputContainer').classList.remove('show');
+            input.value = '';
+            console.log(`📧 Enviando notificaciones a ${tipoCorreo}: ${email}`);
+        }
+
+        function confirmarWhatsApp() {
+            const input = document.getElementById('whatsappNotifInput');
+            const numero = input.value.trim();
+            if (!numero || numero.length < 8) {
+                alert('⚠️ Por favor, ingresa un número de WhatsApp válido (ej. +51 987 654 321)');
+                return;
+            }
+            whatsappNotif = numero;
+            setNotificacion('whatsapp');
+            const msg = document.getElementById('notifMessage');
+            msg.textContent = '📱 Notificaciones activadas para WhatsApp: ' + numero;
+            document.getElementById('whatsappInputContainer').classList.remove('show');
+            input.value = '';
+            console.log('📱 Enviando notificaciones a WhatsApp: ' + numero);
+        }
+
+        // ===== IA =====
+        const tipoSelect = document.getElementById('tipoIncidencia');
+        const prioridadSpan = document.getElementById('prioridadVal');
+        const entidadSpan = document.getElementById('entidadVal');
+        const estadoSpan = document.getElementById('estadoVal');
+        const iaHint = document.getElementById('iaHint');
+
+        function actualizarIA() {
+            const tipo = tipoSelect.value;
+            let prioridad = 'Pendiente',
+                entidad = 'Pendiente',
+                estado = 'Esperando reporte',
+                hint = 'Selecciona un tipo de incidencia para clasificar.';
+            if (tipo) {
+                estado = 'Evaluado';
+                switch (tipo) {
+                    case 'Inseguridad o acto delictivo':
+                    case 'Incendio o amago de incendio':
+                        prioridad = 'Alta';
+                        entidad = 'Policía / Bomberos';
+                        hint = '⚠️ Prioridad ALTA · entidad: Policía o Bomberos.';
+                        break;
+                    case 'Cableado eléctrico caído o peligroso':
+                    case 'Falta de alumbrado público':
+                        prioridad = 'Media';
+                        entidad = 'ENOSA / concesionaria eléctrica';
+                        hint = '⚡ Prioridad MEDIA · entidad: ENOSA.';
+                        break;
+                    case 'Buzón sin tapa':
+                    case 'Calles o pistas en mal estado':
+                        prioridad = 'Media';
+                        entidad = 'Municipalidad (obras)';
+                        hint = '🛣️ Prioridad MEDIA · entidad: Municipalidad.';
+                        break;
+                    case 'Acumulación de basura o desechos':
+                        prioridad = 'Baja';
+                        entidad = 'Municipalidad (limpieza)';
+                        hint = '🗑️ Prioridad BAJA · entidad: limpieza municipal.';
+                        break;
+                    case 'Falta de servicios básicos (Agua o Luz)':
+                        prioridad = 'Alta';
+                        entidad = 'EPS Grau / ENOSA';
+                        hint = '💧⚡ Prioridad ALTA · entidad: EPS Grau o ENOSA.';
+                        break;
+                    default:
+                        prioridad = 'Media';
+                        entidad = 'Municipalidad';
+                        hint = '📋 Prioridad MEDIA · entidad municipal.';
+                }
+            }
+            prioridadSpan.textContent = prioridad;
+            prioridadSpan.className = 'badge';
+            if (prioridad === 'Alta') prioridadSpan.classList.add('alta');
+            else if (prioridad === 'Media') prioridadSpan.classList.add('media');
+            else if (prioridad === 'Baja') prioridadSpan.classList.add('baja');
+            else prioridadSpan.classList.add('pendiente');
+            entidadSpan.textContent = entidad;
+            estadoSpan.textContent = estado;
+            iaHint.innerHTML = `<i class="fas fa-info-circle"></i> ${hint}`;
+        }
+        tipoSelect.addEventListener('change', actualizarIA);
+        actualizarIA();
+
+        // ===== ENVIAR REPORTE =====
+        document.getElementById('enviarReporteBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            const tipo = tipoSelect.value;
+            if (!tipo) { alert('⚠️ Selecciona un tipo de incidencia.'); return; }
+            const ubicacion = document.getElementById('ubicacion').value || 'Piura, Perú';
+            const desc = document.getElementById('descripcion').value || 'Sin descripción';
+            const prioridad = prioridadSpan.textContent;
+            const entidad = entidadSpan.textContent;
+
+            try {
+
+    const respuesta = await fetch("http://localhost:3000/incidencias", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            titulo: tipo,
+            descripcion: desc,
+            categoria: tipo,
+            ubicacion: ubicacion
+
+        })
+
+    });
+
+    const datos = await respuesta.json();
+    console.log(datos);
+} catch (error) {
+    console.error(error);
+    alert("No se pudo conectar con el servidor.");
+
+}
+
+            const canales = {
+                'Inseguridad o acto delictivo': '105 / 073-306272 (Policía/Serenazgo)',
+                'Incendio o amago de incendio': '116 / 073-324444 (Bomberos)',
+                'Cableado eléctrico caído o peligroso': '073-284050 / WhatsApp: 991 334 000 (ENOSA)',
+                'Buzón sin tapa': '073-214480 (Municipalidad)',
+                'Acumulación de basura o desechos': '073-214480 / WhatsApp: 913 021 445 (Municipalidad)',
+                'Calles o pistas en mal estado': '073-214480 / WhatsApp: 913 021 445 (Municipalidad)',
+                'Falta de servicios básicos (Agua o Luz)': '073-343213 / 0800-11321 (EPS Grau)',
+                'Falta de alumbrado público': '073-284050 / WhatsApp: 991 334 000 (ENOSA)'
+            };
+            const contacto = canales[tipo] || 'Autoridad correspondiente';
+
+            const list = document.getElementById('reportList');
+            const empty = list.querySelector('.empty-reports');
+            if (empty) empty.remove();
+
+            const item = document.createElement('div');
+            item.className = 'report-item';
+            item.innerHTML = `
+                <div class="info">
+                    <strong>Reporte #${list.children.length + 1}</strong>
+                    <span><i class="fas fa-tag"></i> ${tipo}</span>
+                    <span><i class="fas fa-map-pin"></i> ${ubicacion}</span>
+                    <span><i class="fas fa-align-left"></i> ${desc.substring(0, 60)}${desc.length > 60 ? '...' : ''}</span>
+                    <span style="font-size:0.8rem; color:#0c365e;"><i class="fas fa-share"></i> Enviado a: ${contacto}</span>
+                </div>
+                <div class="status">${prioridad} · ${entidad}</div>
+            `;
+            list.prepend(item);
+
+            let notifMsg = document.getElementById('notifMessage');
+            if (notifActiva === 'email' && emailNotif) {
+                const tipoCorreo = emailNotif.toLowerCase().includes('@gmail.com') ? 'Gmail' : 'Apple';
+                notifMsg.textContent = `📧 Reporte #${list.children.length} enviado a ${tipoCorreo}: ${emailNotif}`;
+                console.log(`📧 Enviando a ${tipoCorreo}: ${emailNotif}`);
+            } else if (notifActiva === 'whatsapp' && whatsappNotif) {
+                notifMsg.textContent = `📱 Reporte #${list.children.length} enviado a WhatsApp: ${whatsappNotif}`;
+                console.log(`📱 Enviando a WhatsApp: ${whatsappNotif}`);
+            } else {
+                notifMsg.textContent = `✅ Reporte #${list.children.length} enviado a ${entidad} (${contacto})`;
+            }
+
+            estadoSpan.textContent = 'En proceso';
+            iaHint.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> Reporte enviado. Procesando...`;
+            setTimeout(() => {
+                estadoSpan.textContent = 'Resuelto';
+                iaHint.innerHTML =
+                `<i class="fas fa-check-circle" style="color:#1f8b4c;"></i> Reporte procesado. Seguimiento completado.`;
+                if (notifActiva === 'email' && emailNotif) {
+                    const tipoCorreo = emailNotif.toLowerCase().includes('@gmail.com') ? 'Gmail' : 'Apple';
+                    notifMsg.textContent = `📧 Reporte #${list.children.length} resuelto. Revisa tu ${tipoCorreo}: ${emailNotif}`;
+                } else if (notifActiva === 'whatsapp' && whatsappNotif) {
+                    notifMsg.textContent = `📱 Reporte #${list.children.length} resuelto. Revisa tu WhatsApp: ${whatsappNotif}`;
+                } else {
+                    notifMsg.textContent = `✅ Reporte #${list.children.length} resuelto. Seguimiento completado.`;
+                }
+            }, 2500);
+
+            document.getElementById('descripcion').value = '';
+            document.getElementById('fileDisplay').textContent = 'Ningún archivo seleccionado';
+            document.getElementById('fileInput').value = '';
+            setTimeout(() => switchPanel('myreports'), 400);
+        });
+
+        document.getElementById('fileBtn').addEventListener('click', () => document.getElementById('fileInput').click());
+        document.getElementById('fileInput').addEventListener('change', function() {
+            document.getElementById('fileDisplay').textContent = this.files.length ? this.files[0].name :
+                'Ningún archivo seleccionado';
+        });
+
+        // ===== AYUDA =====
+        function toggleFaq(el) {
+            const answer = el.nextElementSibling;
+            answer.classList.toggle('open');
+            el.classList.toggle('active');
+        }
+
+        function responderAyuda() {
+            const input = document.getElementById('helpInput');
+            const responseDiv = document.getElementById('helpResponse');
+            const q = input.value.trim();
+            if (!q) { responseDiv.style.display = 'none'; return; }
+            responseDiv.style.display = 'block';
+            let resp = 'Gracias por tu pregunta. ';
+            const lower = q.toLowerCase();
+            if (lower.includes('reporte') || lower.includes('enviar')) {
+                resp += 'Para enviar un reporte, ve a la sección "Reporte", completa el formulario y haz clic en "Enviar Reporte". La IA clasificará tu incidencia y la enviará a la autoridad correspondiente.';
+            } else if (lower.includes('prioridad') || lower.includes('clasific')) {
+                resp += 'La IA asigna prioridad (Alta, Media, Baja) según el tipo de incidencia. Las de mayor riesgo reciben atención inmediata.';
+            } else if (lower.includes('mapa') || lower.includes('ubicación')) {
+                resp += 'Puedes ver el mapa de incidencias en la sección "Mapa". Allí se muestran los reportes cercanos a tu ubicación en Piura.';
+            } else if (lower.includes('contraseña') || lower.includes('login')) {
+                resp += 'Para restablecer tu contraseña, usa la opción "¿Olvidaste tu contraseña?" en la pantalla de inicio de sesión.';
+            } else if (lower.includes('notificacion') || lower.includes('alerta')) {
+                resp += 'Puedes activar notificaciones por Correo (ingresando tu email @gmail.com o @icloud.com), WhatsApp (ingresando tu número) o Plataforma usando los botones en la barra de notificaciones.';
+            } else {
+                resp += 'Puedes consultar nuestras preguntas frecuentes o escribirnos a soporte@urbanalert.pe para más ayuda.';
+            }
+            responseDiv.innerHTML = `<i class="fas fa-robot" style="color:#0c365e;"></i> ${resp}`;
+            input.value = '';
+        }
+
+        document.getElementById('helpInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') responderAyuda();
+        });
+
+        switchPanel('home');
+    </script>
+</body>
+</html>
