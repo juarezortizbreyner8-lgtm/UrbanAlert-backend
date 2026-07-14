@@ -37,7 +37,7 @@ let prioridad = "Baja";
 switch (categoria) {
 
     case "Inseguridad o acto delictivo":
-    id_entidad = 5;          // Policía Nacional del Perú
+    id_entidad = 1;          // Policía Nacional del Perú
     prioridad = "Alta";
     break;
     
