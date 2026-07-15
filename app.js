@@ -131,37 +131,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const respuesta = await fetch("http://localhost:3000/incidencias", {
+           const respuesta = await fetch(
+    "https://urbanalert-backend-production.up.railway.app/incidencias",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(reporte)
+    }
+);
 
-                method: "POST",
+const datos = await respuesta.json();
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+if (!respuesta.ok) {
+    alert(datos.mensaje || "Error al guardar el reporte.");
+    return;
+}
+      alert(datos.mensaje);
 
-                body: JSON.stringify(reporte)
+guardarReporteLocal(reporte, clasificacion);
+mostrarReportes();
+actualizarEstadisticas();
+limpiarFormulario();
 
-            });
-
-            const datos = await respuesta.json();
-
-            if (!respuesta.ok) {
-
-                alert(datos.mensaje || "Error al guardar el reporte.");
-
-                return;
-
-            }
-
-            alert(datos.mensaje);
-
-            guardarReporteLocal(reporte, clasificacion);
-
-            mostrarReportes();
-
-            actualizarEstadisticas();
-
-            limpiarFormulario();
 
         } catch (error) {
 

@@ -7,12 +7,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+require("dotenv").config();
+
+
 const conexion = mysql.createConnection({
-    host: process.env.MYSQLHOST || "localhost",
-    user: process.env.MYSQLUSER || "root",
-    password: process.env.MYSQLPASSWORD || "breysi123",
-    database: process.env.MYSQLDATABASE || "urbanalert",
-    port: process.env.MYSQLPORT || 3306
+    host: process.env.MYSQLHOST,
+    port: process.env.MYSQLPORT,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE
+
 });
 
 conexion.connect((error) => {
