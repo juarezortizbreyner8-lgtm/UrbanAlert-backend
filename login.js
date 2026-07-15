@@ -7,8 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3000/login", {
-
+        fetch("https://urbanalert-backend-production.up.railway.app/login", {
             method: "POST",
 
             headers: {

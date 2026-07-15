@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ELEMENTOS DEL FORMULARIO
     // ===========================================
 
-    const tipoIncidencia = document.getElementById("tipoIncidencia");
+     tipoIncidencia = document.getElementById("tipoIncidencia");
     const ubicacion = document.getElementById("ubicacion");
     const descripcion = document.getElementById("descripcion");
     const enviarReporteBtn = document.getElementById("enviarReporteBtn");

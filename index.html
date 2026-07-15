@@ -2275,7 +2275,7 @@ Iniciar Sesión
 
             try {
 
-    const respuesta = await fetch("http://localhost:3000/incidencias", {
+    fetch("https://urbanalert-backend-production.up.railway.app/incidencias", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
