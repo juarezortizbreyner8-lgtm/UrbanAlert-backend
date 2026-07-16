@@ -28,6 +28,7 @@ conexion.connect((error) => {
     }
 });
 
+
 app.get("/", (req, res) => {
     res.send("Servidor UrbanAlert funcionando");
 });

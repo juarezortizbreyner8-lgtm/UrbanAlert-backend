@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===========================================
 
     enviarReporteBtn.addEventListener("click", async (e) => {
-
+        
         e.preventDefault();
 
         // Validar campos
@@ -129,42 +129,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
 
-        try {
+       try {
 
-           const respuesta = await fetch(
-    "https://urbanalert-backend-production.up.railway.app/incidencias",
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(reporte)
-    }
-);
-
-const datos = await respuesta.json();
-
-if (!respuesta.ok) {
-    alert(datos.mensaje || "Error al guardar el reporte.");
-    return;
-}
-      alert(datos.mensaje);
-
-guardarReporteLocal(reporte, clasificacion);
-mostrarReportes();
-actualizarEstadisticas();
-limpiarFormulario();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert("No se pudo conectar con el servidor.");
-
+    const respuesta = await fetch(
+        "https://urbanalert-backend-production.up.railway.app/incidencias",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reporte)
         }
+    );
 
-    });
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        alert(datos.mensaje || "Error al guardar el reporte.");
+        return;
+    }
+
+    alert(datos.mensaje);
+
+    guardarReporteLocal(reporte, clasificacion);
+    mostrarReportes();
+    actualizarEstadisticas();
+    limpiarFormulario();
+
+} catch (error) {
+
+    console.error(error);
+
+    alert("No se pudo conectar con el servidor.");
+  
+}
+
+   });
 
         // ===========================================
     // GUARDAR REPORTE EN LOCALSTORAGE
