@@ -98,6 +98,16 @@ switch (categoria) {
     VALUES (?,?,?,?,?,?)
 `;
 
+console.log("Datos recibidos:");
+console.log({
+    titulo,
+    descripcion,
+    categoria,
+    ubicacion,
+    prioridad,
+    id_entidad
+});
+
     conexion.query(
 
         sql,
@@ -114,6 +124,8 @@ switch (categoria) {
 ],
 
         (error, resultado) => {
+            
+            console.log(resultado);
 
             if(error){
 
