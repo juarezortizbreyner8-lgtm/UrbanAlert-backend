@@ -2260,107 +2260,10 @@ Iniciar Sesión
             estadoSpan.textContent = estado;
             iaHint.innerHTML = `<i class="fas fa-info-circle"></i> ${hint}`;
         }
-        tipoSelect.addEventListener('change', actualizarIA);
+
+        tipoSelect.addEventListener('change', actualizarIA); 
         actualizarIA();
-
-        // ===== ENVIAR REPORTE =====
-        document.getElementById('enviarReporteBtn').addEventListener('click', async function(e) {
-            e.preventDefault();
-            const tipo = tipoSelect.value;
-            if (!tipo) { alert('⚠️ Selecciona un tipo de incidencia.'); return; }
-            const ubicacion = document.getElementById('ubicacion').value || 'Piura, Perú';
-            const desc = document.getElementById('descripcion').value || 'Sin descripción';
-            const prioridad = prioridadSpan.textContent;
-            const entidad = entidadSpan.textContent;
-
-            try {
-
-    fetch("https://urbanalert-backend-production.up.railway.app/incidencias", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            titulo: tipo,
-            descripcion: desc,
-            categoria: tipo,
-            ubicacion: ubicacion
-
-        })
-
-    });
-
-    const datos = await respuesta.json();
-    console.log(datos);
-} catch (error) {
-    console.error(error);
-    alert("No se pudo conectar con el servidor.");
-
-}
-
-            const canales = {
-                'Inseguridad o acto delictivo': '105 / 073-306272 (Policía/Serenazgo)',
-                'Incendio o amago de incendio': '116 / 073-324444 (Bomberos)',
-                'Cableado eléctrico caído o peligroso': '073-284050 / WhatsApp: 991 334 000 (ENOSA)',
-                'Buzón sin tapa': '073-214480 (Municipalidad)',
-                'Acumulación de basura o desechos': '073-214480 / WhatsApp: 913 021 445 (Municipalidad)',
-                'Calles o pistas en mal estado': '073-214480 / WhatsApp: 913 021 445 (Municipalidad)',
-                'Falta de servicios básicos (Agua o Luz)': '073-343213 / 0800-11321 (EPS Grau)',
-                'Falta de alumbrado público': '073-284050 / WhatsApp: 991 334 000 (ENOSA)'
-            };
-            const contacto = canales[tipo] || 'Autoridad correspondiente';
-
-            const list = document.getElementById('reportList');
-            const empty = list.querySelector('.empty-reports');
-            if (empty) empty.remove();
-
-            const item = document.createElement('div');
-            item.className = 'report-item';
-            item.innerHTML = `
-                <div class="info">
-                    <strong>Reporte #${list.children.length + 1}</strong>
-                    <span><i class="fas fa-tag"></i> ${tipo}</span>
-                    <span><i class="fas fa-map-pin"></i> ${ubicacion}</span>
-                    <span><i class="fas fa-align-left"></i> ${desc.substring(0, 60)}${desc.length > 60 ? '...' : ''}</span>
-                    <span style="font-size:0.8rem; color:#0c365e;"><i class="fas fa-share"></i> Enviado a: ${contacto}</span>
-                </div>
-                <div class="status">${prioridad} · ${entidad}</div>
-            `;
-            list.prepend(item);
-
-            let notifMsg = document.getElementById('notifMessage');
-            if (notifActiva === 'email' && emailNotif) {
-                const tipoCorreo = emailNotif.toLowerCase().includes('@gmail.com') ? 'Gmail' : 'Apple';
-                notifMsg.textContent = `📧 Reporte #${list.children.length} enviado a ${tipoCorreo}: ${emailNotif}`;
-                console.log(`📧 Enviando a ${tipoCorreo}: ${emailNotif}`);
-            } else if (notifActiva === 'whatsapp' && whatsappNotif) {
-                notifMsg.textContent = `📱 Reporte #${list.children.length} enviado a WhatsApp: ${whatsappNotif}`;
-                console.log(`📱 Enviando a WhatsApp: ${whatsappNotif}`);
-            } else {
-                notifMsg.textContent = `✅ Reporte #${list.children.length} enviado a ${entidad} (${contacto})`;
-            }
-
-            estadoSpan.textContent = 'En proceso';
-            iaHint.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> Reporte enviado. Procesando...`;
-            setTimeout(() => {
-                estadoSpan.textContent = 'Resuelto';
-                iaHint.innerHTML =
-                `<i class="fas fa-check-circle" style="color:#1f8b4c;"></i> Reporte procesado. Seguimiento completado.`;
-                if (notifActiva === 'email' && emailNotif) {
-                    const tipoCorreo = emailNotif.toLowerCase().includes('@gmail.com') ? 'Gmail' : 'Apple';
-                    notifMsg.textContent = `📧 Reporte #${list.children.length} resuelto. Revisa tu ${tipoCorreo}: ${emailNotif}`;
-                } else if (notifActiva === 'whatsapp' && whatsappNotif) {
-                    notifMsg.textContent = `📱 Reporte #${list.children.length} resuelto. Revisa tu WhatsApp: ${whatsappNotif}`;
-                } else {
-                    notifMsg.textContent = `✅ Reporte #${list.children.length} resuelto. Seguimiento completado.`;
-                }
-            }, 2500);
-
-            document.getElementById('descripcion').value = '';
-            document.getElementById('fileDisplay').textContent = 'Ningún archivo seleccionado';
-            document.getElementById('fileInput').value = '';
-            setTimeout(() => switchPanel('myreports'), 400);
-        });
+    
 
         document.getElementById('fileBtn').addEventListener('click', () => document.getElementById('fileInput').click());
         document.getElementById('fileInput').addEventListener('change', function() {
@@ -2408,3 +2311,4 @@ Iniciar Sesión
     </script>
 </body>
 </html>
+
