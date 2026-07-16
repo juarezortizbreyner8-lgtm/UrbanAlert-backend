@@ -38,6 +38,14 @@ conexion.connect((error) => {
     }
 });
 
+conexion.query("SELECT DATABASE() AS bd", (err, res) => {
+    console.log("Base de datos:", res);
+});
+
+conexion.query("SELECT COUNT(*) AS total FROM incidencias", (err, res) => {
+    console.log("Total incidencias:", res);
+});
+
 
 app.get("/", (req, res) => {
     res.send("Servidor UrbanAlert funcionando");
