@@ -20,6 +20,16 @@ const conexion = mysql.createConnection({
 });
 
 conexion.connect((error) => {
+
+    if (error) {
+        console.log("❌ ERROR AL CONECTAR:", error);
+    } else {
+        console.log("✅ CONECTADO A MYSQL");
+    }
+
+});
+
+conexion.connect((error) => {
     if (error) {
         console.log("❌ Error al conectar con MySQL");
         console.log(error);
@@ -124,7 +134,7 @@ console.log({
 ],
 
         (error, resultado) => {
-            
+
             console.log(resultado);
 
             if(error){
