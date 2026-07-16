@@ -158,9 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 } catch (error) {
 
-    console.error(error);
+    console.error("ERROR COMPLETO:", error);
 
-    alert("No se pudo conectar con el servidor.");
+alert(error.message);
   
 }
 
