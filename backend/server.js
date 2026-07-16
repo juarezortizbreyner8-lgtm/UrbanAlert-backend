@@ -50,6 +50,9 @@ app.use((req, res, next) => {
 
 app.post("/incidencias", (req, res) => {
 
+    console.log("===== NUEVO REPORTE =====");
+console.log(req.body);
+
     const { titulo, descripcion, categoria, ubicacion } = req.body;
 
 let id_entidad = null;
