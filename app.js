@@ -160,8 +160,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.error("ERROR COMPLETO:", error);
 
-alert(error.message);
-  
+    alert(
+        "Nombre: " + error.name +
+        "\nMensaje: " + error.message +
+        "\nStack:\n" + error.stack
+    );
+
 }
 
    });
