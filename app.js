@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===========================================
 
     enviarReporteBtn.addEventListener("click", async (e) => {
+        console .log("BOTON ENVIAR REPORTE PRESIONADO");
         
         e.preventDefault();
 
